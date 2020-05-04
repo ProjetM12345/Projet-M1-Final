@@ -1,0 +1,81 @@
+ /*  ________________________
+	  |   Style of Home.html   |
+	  |________________________|     */
+
+
+
+/* Links */
+a, a:hover, a:focus {
+  color: #fff;                  /* the links to the linkedIn profil of the developpers not blue*/ 
+}
+
+/* Custom default button "Let's go in the middle of the page  */
+.btn-secondary{
+  color: #333;
+  text-shadow: none;             /* Prevent inheritance from `body` */
+  background-color: #fff;
+  border: .05rem solid #fff;
+}
+
+
+/* Base structure */
+
+html,
+body {
+  height: 100%;                    /* full page and responsive  */
+  background-color: #333;
+}
+
+body {                             /* responsive body and white text */
+  display: -ms-flexbox;
+  display: -webkit-box;
+  display: flex;
+  -ms-flex-pack: center;
+  -webkit-box-pack: center;
+  justify-content: center;
+  color: #fff;
+  text-shadow: 0 .05rem .1rem rgba(0, 0, 0, .5);
+  box-shadow: inset 0 0 5rem rgba(0, 0, 0, .5);
+  background: url("./pictures/space3.png"); /*background image */
+}
+
+/* Header (navbar style) */
+
+.nav-masthead .nav-link {           /*navbar style*/
+  padding: .25rem 0;
+  font-weight: 700;
+  color: rgba(255, 255, 255, .5);
+  background-color: transparent;
+  border-bottom: .25rem solid transparent;       
+}
+
+.nav-masthead .nav-link:hover,
+.nav-masthead .nav-link:focus {
+  border-bottom-color: rgba(255, 255, 255, .25);  /*bottom border appears when have in mouse on the button */
+}
+
+.nav-masthead .nav-link + .nav-link {
+  margin-left: 1rem;                           /* add margin between links*/
+}
+
+.nav-masthead .active {                        /*3D Mind map editor navbar link*/
+  color: #fff;
+  border-bottom-color: #fff;                 /*line below the "3D Mind map editor" (the active link)*/
+}
+
+@media (min-width: 48em) {                      /*master head (title of the projet) in the same line of the navbar (with the two links)*/
+  .masthead-brand {
+    float: left;                                /*title of the projet at the left of the navbar*/
+  }
+  .nav-masthead {                               /*navbar at the right of the project title*/
+    float: right;
+  }
+}
+
+/* Cover */
+.cover {
+  padding: 0 1.5rem;                         /*defines the different filling gaps on the four sides of the cover */                    
+}
+
+
+

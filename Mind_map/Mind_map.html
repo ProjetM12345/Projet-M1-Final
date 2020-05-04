@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+  <!-- HEAD -->
+  <head>
+    <title>3D Mind Map</title>
+    <!-- Meta-->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=yes">
+    <meta name="Présentation du projet" content="">
+    <meta name="Coline VIALA & Yohann ROLLAND" content="">
+    <!-- CONNECTION WITH CSS STYLE AND JAVASCRIPT FILE -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>    <!-- jquery.min.js   -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script> <!-- boostrap.min.js : all html pages were built with the Bootstrap interface framework. This contains HTML and CSS codes, forms, buttons, navigation tools and other interactive elements.-->
+    <link href="./css/mindMap_style.css" rel="stylesheet">                             <!-- Css style of the mind map editor -->
+    <link rel="icon" type="image/png" href="./css/pictures/favicon2.png">              <!-- Favicon of the page -->
+    <script src="js/three.min.js"></script>                                            <!-- three.js librairie  : JavaScript library used to create 3D scenes in a web browser.-->
+    <script src="js/three.js"></script>                                                <!-- Les fonctionnalités correspondant aux fichiers JavaScript de l’éditeur     -->
+    <script type="text/javascript" src="./js/createWorld.js" defer></script>           <!-- createWorld.js: Add Sphere, Add Link, Show an example, Empty map -->
+    <script type="text/javascript" src="./js/police.js" defer></script>                <!-- police.js: font geometry used for TextGeometry objects (legends) -->
+    <script type="text/javascript" src="./js/mouseMovement.js" defer></script>         <!-- mouseMovement.js: user mouse event management functions-->
+    <script type="text/javascript" src="./js/canvasOptionCheckbox.js" defer></script>  <!-- canvasOptionCheckbox.js : Labels, autoRotate, Grid -->
+    <script type="text/javascript" src="./js/objectLabel.js" defer></script>           <!-- objectLabel.js: Creation of a legend for concepts and entities-->
+    <script type="text/javascript" src="./js/otherFunctions.js" defer></script>        <!-- otherFunctions.js: Small functions useful to other functions of other files (to avoid too much redundancy in the lines of code)-->
+    <script type="text/javascript" src="./js/jsonLoader.js" defer></script>            <!-- jsonLoader.js: Loading and saving a concept map (JSON file) -->
+  </head>
+  <!-- BODY -->
+  <body onload="init()"  onresize="onWindowResize()">
+    <!-- Header : Tool bar at the top of the page -->
+    <header>
+      <nav class="navbar navbar-inverse navbar-expand-md navbar-dark fixed-top bg-dark" id="tool-bar">             <!-- Dark tool bar on the top of the page -->                                         
+        <a class="navbar-brand" href="file:///C:/xampp/htdocs/PROJETM1/Carte_conceptuelle/Carte_conceptuelle/Presentation_du_projet/projet.html"> 3D Mind Map Editor</a>   <!-- Title of the page => button whith allow the user to refresh the page-->
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+          <ul class="nav navbar-nav mr-auto">                                           <!-- Boutons on tool bar -->
+            <li class="nav-item active">                                                <!-- First bouton "active" to highlight it (in white) -->
+              <a class="nav-link" href="file:///C:/xampp/htdocs/PROJETM1/Carte_conceptuelle/Carte_conceptuelle/Home_page/Home.html">Home<span class="sr-only">(current)</span></a>  <!-- First button to return to the home page -->
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="file:///C:/xampp/htdocs/PROJETM1/Carte_conceptuelle/Carte_conceptuelle/Mind_map/Mind_map.html">Create your own 3D Mind Map</a>              <!-- Second button to go to the 3D Mind Map Editor page -->
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target=".bd-example-modal-lg" >Help</a>           <!-- Third button to go to open the modal "Help"  -->
+            </li> 
+          </ul>
+        </div>
+      </nav>
+    </header>
+        
+
+    <!-- Modal -->
+    <div id="myModal1" class="modal fade" role="dialog">                               <!-- modal for Add sphere -->
+      <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>   <!-- little cross button to close the modal -->
+            <h4 class="modal-title">Which sphere do you want to add?</h4>               <!-- modal title -->
+          </div>
+          <div class="modal-body">                                                      <!-- modal body -->
+            <div>
+            <label for="name">Name :</label>
+            <input class="input_txt" type="text" id="name_sphere" name="name" requiredminlength="0" size="30"> <!-- allows the user to name his new sphere-->
+          </div>
+          <div>
+            <label>Please enter a number between 100 and -100 to choose the height of the object (relative to the grid) that you are moving:</label>
+            <input id="number_height" type="number" value="40" >                         <!-- users choose the heigth of the sphere (Y-axis)-->
+          </div>
+          </div>
+          <div class="modal-footer">                                                    <!-- modal footer -->
+            <button type="button" class="btn btn-default" onclick="addNewSphere(number_height.value);">Add Sphere</button> <!-- add the sphere in the map -->
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>  <!-- button to close the modal -->
+          </div>
+        </div>
+      </div>
+    </div>  
+
+
+    <!-- Modal -->
+    <div id="myModal2" class="modal fade" role="dialog">                                <!-- modal for Add Link -->
+      <div class="modal-dialog">
+          <!-- Modal content-->
+          <div class="modal-content">
+          <div class="modal-header">                                                 
+              <button type="button" class="close" data-dismiss="modal">&times;</button> <!-- little cross button to close the modal -->
+              <h4 class="modal-title">Which spheres do you want to link?</h4>           <!-- modal title -->
+          </div>
+          <div class="modal-body">                                                      <!-- modal body -->
+            <label for="sel1">Choose the first sphere:</label>                          <!-- First sphere connected -->
+            <form id="myForm">                                                          <!-- the user can choose between all the sphere currently on the map-->
+              <select id="sphere1">
+                <option>Sphere name</option>
+              </select>
+            </form>
+            <br/>
+            <label for="sel1">Choose the second sphere:</label>                         <!-- Second sphere connected -->
+            <form id="myForm">                                                          <!-- the user can choose between all the sphere currently on the map-->
+              <select id="sphere2">
+                <option>Sphere name</option>
+              </select>
+            </form>
+            <div>
+            <label for="name">Link name :</label>
+            <input type="text" id="name_link" name="name" requiredminlength="0" size="30">  <!--allows the user to name his new link-->
+          </div>
+          </div>
+          <div class="modal-footer">                                                     <!-- modal footer -->
+            <button type="button" class="btn btn-default" onclick="addLinkedSphere(sphere1.value,sphere2.value);">Add Link</button> <!-- add a link between the first sphere and the second sphere in the map -->
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>   <!-- button to close the modal -->
+          </div>
+        </div>
+      </div>
+    </div>  
+
+
+    <!-- Modal -->
+    <div id="myModal" class="modal fade bd-example-modal-lg" role="dialog">              <!-- Help modal-->
+      <div class="modal-dialog modal-lg">                                                <!-- class "modal-lg" to create a large modal-->
+        <!-- Modal content-->
+        <div class="modal-content">                                                       
+          <div class="modal-header">                                                     <!-- Modal header-->
+            <button type="button" class="close" data-dismiss="modal">&times;</button>  <!-- little cross button to close the modal -->
+            <h4 class="modal-title">How does the 3D Mind Map work ?</h4>               <!-- Modal title-->
+          </div>
+          <div class="modal-body">                                                       <!-- Modal body -->
+            <h4 class="modal-firstLine">Here we are! Here you will learn how to create your own mind map.
+                Let's start with the beginning, the first step is to know how to create spheres and links.</h4> <!-- class "modal-firstLine" to make the text blue and bigger (more information in the mindMap_style.css file-->
+            <br/>
+            <p><b>addSphere</b></p>                                                    <!--<d> for 'bold'-->
+            <p>To add a sphere (or concept) to the 3D Mind Map, click on the “Add Sphere” button. 
+              The program displays a modal that allows it to name its new sphere and choose position according to the Y axis (its height). 
+              This height chosen by the user must be between -100 and 100 because otherwise the added object would not be visible on the view window of the mind map.</p>
+            <br/>
+            <p><b>addLink</b></p>
+              <p>To add a link to the 3D mind map, click on the “Add Link” button. The program will then display a modal, the user is led to choose the name of the links and the spheres he wants to connect.</p>
+            <br/>                
+            <h4 class="modal-firstLine">Next step : Mouse actions (the following fonctionalities works with the user's mouse)</h4>
+            <br/>
+            <p><b>Rotate</b></p>
+            <p>To be able to view your mindmap from all these angles, you must select the “Rotate” radio button, 
+                then click on the view window of the mind map and perform movements with the mouse (keeping the mouse button pressed).</p>
+            <br/>
+            <p><b>Drag</b></p>
+            <p>The “Drag” functionality allows you to move the spheres. To do this, click on the sphere and move with the mouse (the mouse button pressed) to the desired location.</p>
+            <br/>
+            <p><b>Rename</b></p>   
+            <p>Users can rename their objects as they wish. To do this, the method is to click on the radio button "Rename" (third button from the left) and then click on the sphere he wants to rename. At this time, the interface proposes to change the name of the sphere in question. If the user wishes to delete the legend of a sphere, they can simply rename it with an empty character string. It should be mentioned that the user can choose not to display the captions by clicking on the “Label” check box. However, renaming a link is much simpler, 
+              the user does not have to have selected the "Rename" feature to do so. He can rename a link simply by clicking on the link.</p>
+            <br/>
+            <p><b>Delete</b></p>
+            <p>Beyond modifying the legends of the objects, the user can also delete the elements of the mindmap that he wishes with the "Delete" functionality. To activate these functions and to delete existing links or spheres,
+                the user must click on the “Delete” radio button (fourth button on the interface from the left) and press the object he wishes to delete.</p>
+            <br/>
+            <h4 class="modal-firstLine">And finally: save and import your mindmap in three dimensions!</h4>
+            <br/>
+            <p><b>Download my map in my computer</b></p>
+            <p>Once the mindmap created by the user on the interface, it becomes possible and useful to be able to save it in the files of the computer. The format that was chosen here is the JSON format, because it is compatible with the programming language used, javascript.
+              You will surely find your .json file in your downloads</p>
+            <br/>
+            <p><b>Import your own mind map on this 3D mind map editor</b></p>
+            <p>Now that the user can save his mindmap in JSON format, it becomes necessary that he can import his own mindmap on the three-dimensional mindmap editor! Of course it only works when the user tries to import JSON type files. To load their mindmap on the editor, the user must click on the "Load a file" button. For obvious reasons, the mindmap editor prevents you from being able to load two files at the same time, 
+              simply because the mindmap editor allows you to view only one mindmap at a time.</p>
+            <br/>
+            <h4 class="modal-firstLine">All good things come to an end, now it's your turn! </h4>
+          </div>
+          <div class="modal-footer">                                                      <!-- modal footer-->
+              <button type="button" class="btn btn-default" data-dismiss="modal">I get it!</button> <!-- button to close the modal -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="w3-container ">                                                           <!-- Line of button below the navBar -->
+      <div  id="content">
+        <h4  class="color-label" style="text-indent: 20px;"  > Mouse actions : </h4>      <!-- text-indent: 20px => to make a paragraph -->
+        <!-- Radio button : the user can select only one of them at the same time -->
+        <label class="btn btn-default label1 addmargin"><input type="radio" name="action" id="mouseRotate"> Rotate</label> <!-- To be able to view your concept map from all angles-->
+        <label class=" btn btn-default label1"><input type="radio" name="action" id="mouseDrag"> Drag</label>                                    <!-- if the user clicks on a sphere, it moves according to the positions of the mouse -->
+        <label class=" btn btn-default label1"><input type="radio" name="action" id="mouseRename"> Rename</label>                                <!-- Rename objects of the mind map (sphere or link)-->
+        <label class=" btn btn-default label1"><input type="radio" name="action" id="mouseDelete"> Delete</label>                                <!-- Delete objets (spheres or links)-->
+        <!-- Check box -->
+        <label class=" btn btn-default label1 addmargin"><input type="checkbox" id="myCheck" onclick="showGridHelper()"> Grid </label>           <!-- Show or hide a grid helper -->
+        <label class=" btn btn-default label1"><input type="checkbox" id="label" onclick="showLabel()"> Label </label>                           <!-- Show or hide sphere label  -->
+        <label class=" btn btn-default label1"><input type="checkbox" id="autoRotate" onclick="autoRotate()"> Auto-Rotate </label>               <!-- Allows to automatically rotate your concept map by clicking on the “AutoRotate” check box-->
+        <!-- Other buttons -->
+        <label><a type="button" class="btn btn-default label1 addmargin"  onclick="addExemple();" id="mapExample">Show an example</a> </label>   <!-- Show an exemple of mind map (with fruits)-->         
+        <label><a type="button" class="btn btn-default label1"  onclick="deleteObjects();" id="emptyMap">Empty map</a> </label>                  <!-- Delete all objects of the map-->
+        <label><a type="button" class="btn btn-default label1 addmargin" data-toggle="modal" data-target="#myModal1" id="mouseAddSphere">Add Sphere</a> </label>                    <!-- To add a sphere (and open a moddal to do it)-->
+        <label><a type="button" class="btn btn-default label1" data-toggle="modal" data-target="#myModal2" onclick="CreateLabelTab()" id="mouseAddLink">Add Link</a> </label>       <!-- To add a link (and open a moddal to do it)-->      
+        <label><a type="button" class="btn btn-default label1 addmargin" id="link" target="_blank" download="MindMap.json" onclick="download_file();">Download my map</a></label>   <!-- Saves the current mind map in a JSON file -->
+        <label class="fileLabel" for="jsonFileLoader"><input type="file"  class="btn btn-default label5" id="jsonFileLoader" name="jsonFileLoader" accept=".json"></label>          <!-- Loading a mind map from a JSON file. Input type="file" open the user's file explorer-->
+        <br/>
+        <br/>
+      </div>
+    </div>
+    
+    <div id="canvas-holder1">
+      <canvas id="maincanvas" width=0 height="0"></canvas>                               <!-- 3D concept map viewing window-->
+    </div>
+  </body>
+</html>

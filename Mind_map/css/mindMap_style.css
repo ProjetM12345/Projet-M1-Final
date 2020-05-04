@@ -1,0 +1,72 @@
+
+ /*  ________________________
+	| Style of Mind_map.html |
+	|________________________|     */
+
+
+
+/* ------ HEADER (navbar) ------ */
+/*-------------------------------*/
+#tool-bar{
+	background: url("./pictures/space3.png"); /* backgroung picture of the navbar*/
+	height: 6rem;                             /* navbar heigth */
+	border-bottom-style: solid;               /* visible bottom border*/ 
+	border-bottom-width: 2px;                 /* width of the bottom border */
+	border-bottom-color: silver;            /* color of the bottom border */
+} 
+
+.modal-firstLine{                             /* style of the "Help" modal (especially the sub-title)*/
+	font-size: 1.2em;
+	color: rgb(68, 135, 197);
+	font-weight: lighter;
+}
+
+/* ------ BODY ------ */
+/*--------------------*/
+body{
+	margin:0;                                 /* no margin for the body (full page)*/
+	overflow:hidden;
+	background-color: black;
+}
+
+/* Mouse action button */
+label {
+	margin-left: 2px;                        /*space between each button of the same kind (in term of fonctionalities)*/
+	font-weight: lighter;
+}
+
+.label1{                                      /* all the Mouse action button except the last one (select a file)*/ 
+	background-color:silver;               
+	font-size: 1.3rem;
+	font-weight: 300;
+}
+
+.label5{                                       /*the button select a file (json) need to be smaller to fit with the others*/
+	background-color:silver;
+	font-size: 1.1rem;
+	font-weight: 300;
+}
+
+.addmargin{
+	margin-left: 15px;                       /*adding a margin between different type of button */
+}
+
+.color-label{
+	color:rgb(255, 255, 255);              /* for the title "Mouse action"*/
+	font-weight: lighter;                    
+}
+
+.inputfile {                                 /*style of the button select a file (it's a input type="file")*/
+	font-size: 1em;
+	font-weight: 200;
+	color: white;                          /* color of the text */
+	background-color: silver               /* color of the box which contain the name the Json file*/
+}
+
+#maincanvas{                                 /*3D concept map viewing window (three.js)*/
+	width: 100%;                             /* responsive canvas (full width of the body)*/
+}
+
+#canvas-holder1{
+	width: 100%;
+}

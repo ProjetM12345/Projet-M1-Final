@@ -1,0 +1,58 @@
+/* GLOBAL STYLES
+-------------------------------------------------- */
+/* Padding below the footer and lighter body text */
+
+body {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+    color: #5a5a5a;
+  }
+  
+  
+  /* CUSTOMIZE THE PROJECT TITLE BLOC
+  -------------------------------------------------- */
+  
+  /* Project title bloc class */
+  .project-title {
+    margin-bottom: 4rem;   /* to make space between pictures of authors and the containers whith contain the name of the project*/
+    height: 25rem;
+    background-color: #777;
+    background: url("./Pictures/space3.png");
+    color: aliceblue;
+    text-align: center;
+  }
+
+.title1{
+  font-size: 5.5rem;
+}  
+  
+  /* DEVELLOPPERS INFORMATIONS
+  -------------------------------------------------- */
+  /* Style of the colum under the Project Title */
+
+
+  .marketing .col-md-4 {
+    margin : auto;
+    text-align: center;
+  }
+  .marketing h2 {
+    font-weight: 400;
+  }
+  
+  
+  /* Project Presentation
+  ------------------------- */
+  
+  .separation-line {
+    margin: 5rem 0; /* Space out the Bootstrap <hr> more */
+  }
+  
+  /* Thin out the marketing headings */
+  .heading {
+    font-weight: 300;
+    line-height: 1;
+    letter-spacing: -.05rem;
+  }
+  
+  
+  
